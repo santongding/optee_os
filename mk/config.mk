@@ -17,10 +17,15 @@
 # (CFG_* variables only).
 
 # Cross-compiler prefix and suffix
+ROOT				?= $(CURDIR)/../
+TOOLCHAIN_ROOT 			?= $(ROOT)/toolchains
+AARCH32_PATH 			?= $(TOOLCHAIN_ROOT)/aarch32
+CROSS_COMPILE ?= $(AARCH32_PATH)/bin/arm-linux-gnueabihf-
 CROSS_COMPILE ?= arm-linux-gnueabihf-
 CROSS_COMPILE32 ?= $(CROSS_COMPILE)
 CROSS_COMPILE64 ?= aarch64-linux-gnu-
 COMPILER ?= gcc
+
 
 # For convenience
 ifdef CFLAGS

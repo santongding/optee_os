@@ -42,7 +42,8 @@ endif
 
 # Make these default for now
 ARCH            ?= arm
-PLATFORM        ?= vexpress
+PLATFORM        ?= v8a_fvp
+CFG_ARM64_core  ?= y
 # Default value for PLATFORM_FLAVOR is set in plat-$(PLATFORM)/conf.mk
 ifeq ($O,)
 O               := out
