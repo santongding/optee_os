@@ -216,6 +216,12 @@ $(link-out-dir)/tee.bin: $(link-out-dir)/tee.elf scripts/gen_tee_bin.py
 	@$(cmd-echo-silent) '  GEN     $@'
 	$(q)$(PYTHON3) scripts/gen_tee_bin.py --input $< --out_tee_bin $@
 
+all: $(link-out-dir)/tee_no_head.bin
+cleanfiles += $(link-out-dir)/tee_no_head.bin
+$(link-out-dir)/tee_no_head.bin: $(link-out-dir)/tee.elf scripts/gen_tee_bin.py
+	@$(cmd-echo-silent) '  GEN     $@'
+	$(q)$(PYTHON3) scripts/gen_tee_bin.py --input $< --out_no_head_tee_bin $@
+
 all: $(link-out-dir)/tee-header_v2.bin
 cleanfiles += $(link-out-dir)/tee-header_v2.bin
 $(link-out-dir)/tee-header_v2.bin: $(link-out-dir)/tee.elf \

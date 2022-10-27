@@ -16,7 +16,9 @@
 #include <mm/mobj.h>
 
 struct thread_ctx threads[CFG_NUM_THREADS];
-
+#ifdef CFG_USE_HAFNIUM
+int64_t __magic_number = 19260817;
+#endif
 struct thread_core_local thread_core_local[CFG_TEE_CORE_NB_CORE] __nex_bss;
 
 /*
@@ -458,6 +460,12 @@ void thread_init_threads(void)
 void __nostackcheck thread_init_thread_core_local(void)
 {
 	size_t n = 0;
+#ifdef CFG_USE_HAFNIUM
+	int64_t *ptr = &__magic_number;
+	if(*ptr != 19260817){
+		panic();
+	}
+#endif
 	struct thread_core_local *tcl = thread_core_local;
 
 	for (n = 0; n < CFG_TEE_CORE_NB_CORE; n++) {

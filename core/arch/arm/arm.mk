@@ -20,7 +20,11 @@ $(warning Error: CFG_LPAE_ADDR_SPACE_SIZE is not supported any longer)
 $(error Error: Please use CFG_LPAE_ADDR_SPACE_BITS instead)
 endif
 
+ifeq ($(CFG_USE_HAFNIUM), y)
+CFG_LPAE_ADDR_SPACE_BITS ?= 40
+else
 CFG_LPAE_ADDR_SPACE_BITS ?= 32
+endif
 
 CFG_MMAP_REGIONS ?= 13
 CFG_RESERVED_VASPACE_SIZE ?= (1024 * 1024 * 10)

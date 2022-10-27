@@ -270,7 +270,16 @@ def output_raw_bin(elffile, outf):
     outf.write(pageable_bin[:init_bin_size])
     outf.write(embdata_bin)
     outf.write(pageable_bin[init_bin_size:])
+def output_no_head(elffile, outf):
+    pager_bin = get_pager_bin(elffile)
+    pageable_bin = get_pageable_bin(elffile)
+    embdata_bin = get_embdata_bin(elffile)
+    init_bin_size = get_symbol(elffile, '__init_size')['st_value']
 
+    outf.write(pager_bin)
+    outf.write(pageable_bin[:init_bin_size])
+    outf.write(embdata_bin)
+    outf.write(pageable_bin[init_bin_size:])  
 
 def output_header_v1(elffile, outf):
     arch_id = get_arch_id(elffile)
@@ -294,9 +303,9 @@ def output_header_v1(elffile, outf):
     version = 1
     flags = 0
 
-    '''outf.write(struct.pack('<IBBHIIIII', magic, version, arch_id, flags,
+    outf.write(struct.pack('<IBBHIIIII', magic, version, arch_id, flags,
                            init_size, init_load_addr[0], init_load_addr[1],
-                           init_mem_usage, paged_size))'''
+                           init_mem_usage, paged_size))
     outf.write(pager_bin)
     outf.write(pageable_bin[:init_bin_size])
     outf.write(embdata_bin)
@@ -354,6 +363,10 @@ def get_args():
                         required=False, type=argparse.FileType('wb'),
                         help='The output tee.bin')
 
+    parser.add_argument('--out_no_head_tee_bin',
+                        required=False, type=argparse.FileType('wb'),
+                        help='The output no head tee.bin')
+
     parser.add_argument('--out_tee_raw_bin',
                         required=False, type=argparse.FileType('wb'),
                         help='The output tee_raw.bin')
@@ -385,6 +398,9 @@ def main():
     args = get_args()
     print(args.input)
     elffile = ELFFile(args.input)
+
+    if args.out_no_head_tee_bin:
+        output_no_head(elffile, args.out_no_head_tee_bin)
 
     if args.out_tee_raw_bin:
         output_raw_bin(elffile, args.out_tee_raw_bin)

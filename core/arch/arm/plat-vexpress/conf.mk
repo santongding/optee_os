@@ -1,4 +1,4 @@
-PLATFORM_FLAVOR ?= fvp
+PLATFORM_FLAVOR ?= qemu_virt
 
 ifeq ($(PLATFORM_FLAVOR),qemu_virt)
 include core/arch/arm/cpu/cortex-a15.mk

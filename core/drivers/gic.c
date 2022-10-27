@@ -244,6 +244,9 @@ void gic_init_base_addr(struct gic_data *gd,
 			paddr_t gicc_base_pa __maybe_unused,
 			paddr_t gicd_base_pa)
 {
+#ifdef CFG_USE_HAFNIUM
+	return;
+#endif
 	vaddr_t gicc_base = 0;
 	vaddr_t gicd_base = 0;
 

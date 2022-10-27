@@ -51,6 +51,8 @@ $(call force,CFG_CC_OPT_LEVEL,0)
 $(call force,CFG_DEBUG_INFO,y)
 endif
 
+CFG_USE_HAFNIUM ?= y
+
 # CFG_CC_OPT_LEVEL sets compiler optimization level passed with -O directive.
 # Optimize for size by default, usually gives good performance too.
 CFG_CC_OPT_LEVEL ?= s
@@ -72,7 +74,7 @@ CFG_TEE_CORE_DEBUG ?= y
 # 2: error + info
 # 3: error + info + debug
 # 4: error + info + debug + flow
-CFG_TEE_CORE_LOG_LEVEL ?= 2
+CFG_TEE_CORE_LOG_LEVEL ?= 3
 
 # TA log level
 # If user-mode library libutils.a is built with CFG_TEE_TA_LOG_LEVEL=0,

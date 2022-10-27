@@ -1002,10 +1002,10 @@ static bool assign_mem_va_dir(vaddr_t tee_ram_va,
 
 	/*
 	 * tee_ram_va might equals 0 when CFG_CORE_ASLR=y.
-	 * 0 is by design an invalid va, so return false directly.
+	 * 0 is by design an invalid va, so panic() directly.
 	 */
 	if (!tee_ram_va)
-		return false;
+		panic();
 
 	/* Clear eventual previous assignments */
 	for (map = memory_map; !core_mmap_is_end_of_table(map); map++)
@@ -1026,9 +1026,9 @@ static bool assign_mem_va_dir(vaddr_t tee_ram_va,
 			assert(!(map->size & (map->region_size - 1)));
 			map->va = va;
 			if (ADD_OVERFLOW(va, map->size, &va))
-				return false;
+				panic();
 			if (va >= BIT64(core_mmu_get_va_width()))
-				return false;
+				panic();
 		}
 	}
 
@@ -1050,7 +1050,7 @@ static bool assign_mem_va_dir(vaddr_t tee_ram_va,
 			}
 
 			if (SUB_OVERFLOW(va, map->size, &va))
-				return false;
+				panic();
 			va = ROUNDDOWN(va, map->region_size);
 			/*
 			 * Make sure that va is aligned with pa for
@@ -1059,7 +1059,7 @@ static bool assign_mem_va_dir(vaddr_t tee_ram_va,
 			 */
 			if (map->size > 2 * CORE_MMU_PGDIR_SIZE) {
 				if (SUB_OVERFLOW(va, CORE_MMU_PGDIR_SIZE, &va))
-					return false;
+					panic();
 				va += (map->pa - va) & CORE_MMU_PGDIR_MASK;
 			}
 			map->va = va;
@@ -1079,11 +1079,11 @@ static bool assign_mem_va_dir(vaddr_t tee_ram_va,
 				va_is_secure = !va_is_secure;
 				if (ROUNDUP_OVERFLOW(va, CORE_MMU_PGDIR_SIZE,
 						     &va))
-					return false;
+					panic();
 			}
 
 			if (ROUNDUP_OVERFLOW(va, map->region_size, &va))
-				return false;
+				panic();
 			/*
 			 * Make sure that va is aligned with pa for
 			 * efficient pgdir mapping. Basically pa &
@@ -1094,14 +1094,14 @@ static bool assign_mem_va_dir(vaddr_t tee_ram_va,
 					       CORE_MMU_PGDIR_MASK;
 
 				if (ADD_OVERFLOW(va, offs, &va))
-					return false;
+					panic();
 			}
 
 			map->va = va;
 			if (ADD_OVERFLOW(va, map->size, &va))
-				return false;
+				panic();
 			if (va >= BIT64(core_mmu_get_va_width()))
-				return false;
+				panic();
 		}
 	}
 
