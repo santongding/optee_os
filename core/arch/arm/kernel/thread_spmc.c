@@ -947,6 +947,7 @@ void thread_spmc_msg_recv(struct thread_smc_args *args);
 void thread_spmc_msg_recv(struct thread_smc_args *args)
 {
 	assert((thread_get_exceptions() & THREAD_EXCP_ALL) == THREAD_EXCP_ALL);
+	DMSG("Recv func:%x\n", args->a0);
 	switch (args->a0) {
 #if defined(CFG_CORE_SEL1_SPMC)
 	case FFA_VERSION:
@@ -1011,6 +1012,7 @@ void thread_spmc_msg_recv(struct thread_smc_args *args)
 		spmc_set_args(args, FFA_ERROR, FFA_PARAM_MBZ, FFA_NOT_SUPPORTED,
 			      FFA_PARAM_MBZ, FFA_PARAM_MBZ, FFA_PARAM_MBZ);
 	}
+	DMSG("Return with func:%x\n", args->a0);
 }
 
 static TEE_Result yielding_call_with_arg(uint64_t cookie, uint32_t offset)

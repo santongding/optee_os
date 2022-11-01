@@ -1011,4 +1011,5 @@ void spmc_sp_msg_handler(struct thread_smc_args *args,
 			sp_enter(args, caller_sp);
 		}
 	} while (caller_sp);
+	DMSG("Return with func:%x\n", args->a0);
 }

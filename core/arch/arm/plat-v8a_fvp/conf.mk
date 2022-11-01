@@ -28,6 +28,8 @@ endif
 
 $(call force,CFG_ARM64_core,y)
 $(call force,CFG_CORE_SEL1_SPMC,y)
+$(call force,CFG_WITH_ARM_TRUSTED_FW,y)
+$(call force,CFG_USE_HAFNIUM,y)
 
 CFG_WITH_STATS ?= y
 CFG_ENABLE_EMBEDDED_TESTS ?= y
